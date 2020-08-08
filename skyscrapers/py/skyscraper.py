@@ -129,7 +129,7 @@ class Skyscraper(object):
 
     @staticmethod
     def get_field_names(rows):
-        ret_field_names = ['sum_left', 'sum_right']
+        ret_field_names = ['left', 'right']
         if (len(rows) > 0):
             field_cnt = len(rows[1])
             if (field_cnt > 2):
