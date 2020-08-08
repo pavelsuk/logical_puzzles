@@ -1,8 +1,14 @@
 import csv
 import pathlib
 
+from enum import Enum
 from itertools import permutations
 from typing import List
+
+
+class SkyscraperTypes(Enum):
+    C_SKSCR_SUM = 1
+    C_SKSCR_COUNT = 2
 
 
 class Skyscraper(object):
@@ -71,7 +77,7 @@ class Skyscraper(object):
         return ret_sum
 
     @staticmethod
-    def append_calculations(perm):
+    def append_sums(perm):
         ret_list = []
         for i in list(perm):
             rev = list(i)
@@ -80,6 +86,38 @@ class Skyscraper(object):
             sum_right = Skyscraper.get_sum(rev)
             i.insert(0, sum_left)
             i.insert(1, sum_right)
+            ret_list.append(i)
+        return ret_list
+
+    @staticmethod
+    def get_count(row: List) -> int:
+        """Calculates the count, based on visibility in the skyscraper
+        If one of the preceding numbers is higher, current number in the list can't be counted
+
+        Args:
+            row (List): row in the skyscraper
+
+        Returns:
+            int: count, based on skyscraper rules
+        """
+        max_num = 0
+        ret_count = 0
+        for i in list(row):
+            if (i > max_num):
+                ret_count+= 1
+                max_num = i
+        return ret_count
+
+    @staticmethod
+    def append_count(perm):
+        ret_list = []
+        for i in list(perm):
+            rev = list(i)
+            rev.reverse()
+            count_left = Skyscraper.get_count(i)
+            count_right = Skyscraper.get_count(rev)
+            i.insert(0, count_left)
+            i.insert(1, count_right)
             ret_list.append(i)
         return ret_list
 
@@ -114,7 +152,8 @@ class Skyscraper(object):
     @staticmethod
     def generate_all_permutations_2_csv(grid_size,
                                         csv_filename: str = None,
-                                        csv_path: str = None):
+                                        csv_path: str = None,
+                                        skyscraper_type: int = SkyscraperTypes.C_SKSCR_SUM):
         """ Generate all permutations, including sums and save it to csv file
 
         Args:
@@ -132,7 +171,14 @@ class Skyscraper(object):
             # perm = Skyscraper.reduce_reversed(perm)
             # print('Permutations reduced')
             # Skyscraper.print_rows(perm)
-            perm = Skyscraper.append_calculations(perm)
+            if (skyscraper_type == SkyscraperTypes.C_SKSCR_SUM):
+                perm = Skyscraper.append_sums(perm)
+            elif (skyscraper_type == SkyscraperTypes.C_SKSCR_COUNT):
+                perm = Skyscraper.append_count(perm)
+            else:
+                print('Invalid option')
+                return
+
             print('Added calculation')
             Skyscraper.print_rows(perm)
             Skyscraper.export2csv(perm, csv_filename, csv_path)
