@@ -1,1 +1,1 @@
-Folder for test results
+# Folder for test result

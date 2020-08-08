@@ -104,7 +104,7 @@ class Skyscraper(object):
         ret_count = 0
         for i in list(row):
             if (i > max_num):
-                ret_count+= 1
+                ret_count += 1
                 max_num = i
         return ret_count
 
