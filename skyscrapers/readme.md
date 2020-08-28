@@ -12,3 +12,4 @@ Source: [Brainbashers - Skyscrapers](https://www.brainbashers.com/skyscrapershel
 ## Permutation generator
 
 - Run `python py\run.py`  from this folder to create 4, 5 and 6 grid permutations. It stores these files in [grids](grids) folder. First 2 columns in CSV are calculated according to Skyscrapers rules.
+
